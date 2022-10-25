@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.32413.511
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "lab3", "lab3\lab3.csproj", "{08861D0F-52B7-4680-A3A9-ACD982F739C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinFunTest", "MinFunTest\MinFunTest.csproj", "{D9F0B89B-1CC2-4EE0-93CE-6C5FEBFFFA74}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinFunTest", "MinFunTest\MinFunTest.csproj", "{D9F0B89B-1CC2-4EE0-93CE-6C5FEBFFFA74}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
