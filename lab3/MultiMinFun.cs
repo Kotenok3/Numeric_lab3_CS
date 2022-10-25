@@ -58,7 +58,7 @@ namespace lab3
             return Math.Sqrt(sum);
         }
         
-        public static (double x, double y) MinFunGradientFraction(double x0, double y0, double esp = 0.0001, bool test = false)
+        public static double[] MinFunGradientFraction(double x0, double y0, double esp = 0.0001, bool test = false)
         {
             double x = x0, y = y0, alfa = 0.25, xk = x0, yk = y0;
             int counter = 0;
@@ -78,20 +78,26 @@ namespace lab3
             }
 
             if (!test)
-                Console.WriteLine($"x={x},y={y} value Fun {Fun(x, y)} norm {Norm(gr)}. counter = {counter}");
+            {
+                Console.WriteLine($"x={x},y={y} value Fun {Fun(x, y)}. counter = {counter}");
+                return new[] { x0, y0, counter };
+            }
             else
-                Console.WriteLine($"(x0,y0)=({x0:F6},{y0:F6})  x={x:F6},y={y:F6}  counter = {counter}");
-            return (x, y);
+            {
+                Console.WriteLine(
+                    $"(x0,y0)=({x0:F6},{y0:F6})  x={x:F6},y={y:F6}  counter = {counter} g={(500 - counter) / 498.0 * 255}");
+                return new[] { x, y, counter };
+            }
 
         }
 
-        public static (double x, double y) MinFunConjugateGradient(double x0, double y0, double esp = 0.0001, bool test = false)
+        public static double[] MinFunConjugateGradient(double x0, double y0, double esp = 0.0001, bool test = false)
         {
             double x = x0, y = y0, alfa = 0.25, xk = x0, yk = y0;
             int counter = 0;
             Func<double[], double[]> grad = FiniteDifferences.Gradient(Fun, 2);
             var p = grad(new[] { x, y });
-            var p1 = p;
+            double[] p1;
             while (true)
             {
 
@@ -115,14 +121,20 @@ namespace lab3
             }
 
             if (!test)
-                Console.WriteLine($"x={x},y={y} value Fun {Fun(x, y)} norm {Norm(p)}. counter = {counter}");
+            {
+                Console.WriteLine($"x={x},y={y} value Fun {Fun(x, y)}. counter = {counter}");
+                return new[] { x0, y0, counter };
+            }
             else
-                Console.WriteLine($"(x0,y0)=({x0:F6},{y0:F6})  x={x:F6},y={y:F6}  counter = {counter}");
-            return (x, y);
+            {
+                Console.WriteLine(
+                    $"(x0,y0)=({x0:F6},{y0:F6})  x={x:F6},y={y:F6}  counter = {counter} g={(500 - counter) / 498.0 * 255}");
+                return new[] { x, y, counter };
+            }
 
         }
         
-        public static (double x, double y) MinFunGradientDescent(double x0, double y0, double esp = 0.0001, bool test = false)
+        public static double[] MinFunGradientDescent(double x0, double y0, double esp = 0.0001, bool test = false)
         {
             double x = x0, y = y0, alfa;
             int counter = 0;
@@ -141,10 +153,16 @@ namespace lab3
             }
 
             if (!test)
+            {
                 Console.WriteLine($"x={x},y={y} value Fun {Fun(x, y)} norm {Norm(gr)}. counter = {counter}");
+                return new[] { x0, y0, counter };
+            }
             else
-                Console.WriteLine($"(x0,y0)=({x0:F6},{y0:F6})  x={x:F6},y={y:F6}  counter = {counter}");
-            return (x, y);
+            {
+                Console.WriteLine(
+                    $"(x0,y0)=({x0:F6},{y0:F6})  x={x:F6},y={y:F6}  counter = {counter} g={(500 - counter) / 498.0 * 255}");
+                return new[] { x, y, counter };
+            }
 
         }
     }
