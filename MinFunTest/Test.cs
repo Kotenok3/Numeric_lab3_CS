@@ -1,4 +1,5 @@
-﻿using lab3;
+﻿using System;
+using lab3;
 using NUnit.Framework;
 
 namespace MinFunTest
@@ -6,20 +7,17 @@ namespace MinFunTest
     [TestFixture]
     public class MultiMinFunDescentTest
     {
-        [Test]
-        public void Simple()
+        public void functionA()
         {
-            var p = MultiMinFun.MinFunGradientDescent(-0.3, -2.8,0.0001,true);
-            Assert.AreEqual(p[0], MultiMinFun.X, 1e-3);
-            Assert.AreEqual(p[1], MultiMinFun.Y, 1e-3);
+            
         }
-
-        [Test]
-        public void Midle()
+        
+        
+        public void Simple(Func<double[], double> fun, double x, double y, double x0, double y0, double param)
         {
-            var p = MultiMinFun.MinFunGradientDescent(-0.3, -2.8,0.0001,true);
-            Assert.AreEqual(p[0], MultiMinFun.X, 1e-3);
-            Assert.AreEqual(p[1], MultiMinFun.Y, 1e-3);
+            var p = MultiMinFun.GradientDescent(fun,x0, y0,0.0001,param,true);
+            Assert.AreEqual(p[0], x, 1e-3);
+            Assert.AreEqual(p[1], y, 1e-3);
         }
 
         [Test]
@@ -29,7 +27,7 @@ namespace MinFunTest
             {
                 for (double y0 = -3.5; y0 < -1.5; y0 += 0.01)
                 {
-                    var p = MultiMinFun.MinFunGradientDescent(x0, y0,0.0001,true);
+                    var p = MultiMinFun.GradientDescent(x0, y0,0.0001,true);
                     Assert.AreEqual(p[0], MultiMinFun.X, 1e-3);
                     Assert.AreEqual(p[1], MultiMinFun.Y, 1e-3);
                 }
@@ -43,7 +41,7 @@ namespace MinFunTest
         [Test]
         public void Simple()
         {
-            var p = MultiMinFun.MinFunGradientFraction(-0.3, -2.8,0.0001,true);
+            var p = MultiMinFun.GradientFraction(-0.3, -2.8,0.0001,true);
             Assert.AreEqual(p[0], MultiMinFun.X, 1e-3);
             Assert.AreEqual(p[1], MultiMinFun.Y, 1e-3);
         }
@@ -51,7 +49,7 @@ namespace MinFunTest
         [Test]
         public void Midle()
         {
-            var p = MultiMinFun.MinFunGradientFraction(-0.5, -1.8,0.0001,true);
+            var p = MultiMinFun.GradientFraction(-0.5, -1.8,0.0001,true);
             Assert.AreEqual(p[0], MultiMinFun.X, 1e-3);
             Assert.AreEqual(p[1], MultiMinFun.Y, 1e-3);
         }
@@ -63,7 +61,7 @@ namespace MinFunTest
             {
                 for (double y0 = -2.9; y0 < -2; y0 += 0.01)
                 {
-                    var p = MultiMinFun.MinFunGradientFraction(x0, y0,0.0001,true);
+                    var p = MultiMinFun.GradientFraction(x0, y0,0.0001,true);
                     Assert.AreEqual(p[0], MultiMinFun.X, 1e-4);
                     Assert.AreEqual(p[1], MultiMinFun.Y, 1e-4);
                 }
@@ -77,7 +75,7 @@ namespace MinFunTest
         [Test]
         public void Simple()
         {
-            var p = MultiMinFun.MinFunConjugateGradient(-0.3, -2.8, 0.0001, true);
+            var p = MultiMinFun.ConjugateGradient(-0.3, -2.8, 0.0001, true);
             Assert.AreEqual(p[0], MultiMinFun.X, 1e-3);
             Assert.AreEqual(p[1], MultiMinFun.Y, 1e-3);
         }
@@ -85,7 +83,7 @@ namespace MinFunTest
         [Test]
         public void Midle()
         {
-            var p = MultiMinFun.MinFunConjugateGradient(-0.3, -2.8, 0.0001, true);
+            var p = MultiMinFun.ConjugateGradient(-0.3, -2.8, 0.0001, true);
             Assert.AreEqual(p[0], MultiMinFun.X, 1e-3);
             Assert.AreEqual(p[1], MultiMinFun.Y, 1e-3);
         }
@@ -97,7 +95,7 @@ namespace MinFunTest
             {
                 for (double y0 = -3.5; y0 < -1.5; y0 += 0.01)
                 {
-                    var p = MultiMinFun.MinFunConjugateGradient(x0, y0, 0.0001, true);
+                    var p = MultiMinFun.ConjugateGradient(x0, y0, 0.0001, true);
                     Assert.AreEqual(p[0], MultiMinFun.X, 1e-3);
                     Assert.AreEqual(p[1], MultiMinFun.Y, 1e-3);
                 }

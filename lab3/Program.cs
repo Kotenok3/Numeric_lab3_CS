@@ -8,8 +8,10 @@ namespace lab3
     {
         static void Main(string[] args)
         {
-            MultiMinFun.MinFunGradientDescent(-0.1, -2.8);
-            MultiMinFun.MinFunGradientFraction(-0.3, -2.8);
+            MultiMinFun.GradientDescent(Fun.A,-0.1, -2.8,1e-6);
+            MultiMinFun.GradientFraction(Fun.A,-0.3, -2.8,1e-6);
+            MultiMinFun.ConjugateGradient(Fun.A,-0.3, -2.8,1e-6);
+            MultiMinFun.GradientDescent(Fun.B, -0.3, -2.8);
             Console.ReadKey();
         }
     }

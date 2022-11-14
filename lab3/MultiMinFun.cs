@@ -5,22 +5,6 @@ namespace lab3
 {
     static public class MultiMinFun
     {
-        public static double X
-        {
-            get => -0.42100280;
-        }
-        
-        public static double Y
-        {
-            get => -2.55847255;
-        }
-        
-        
-        static double Fun(params double [] p)  => 3 * p[0] + 2.2 * p[1] + Math.Exp(1.16 * p[0] * p[0] + 0.14 * p[1] * p[1]);
-        
-        static double SetA(double a) => a/2;
-        static double SetA(Func<double, double> g) => Dichotomy(g, 0, 10);
-        
         static double[] GradP(double[] p, double[] p1, double b)
         {
             var result = new double[p.Length];
@@ -57,29 +41,35 @@ namespace lab3
 
             return Math.Sqrt(sum);
         }
-        
-        public static double[] MinFunGradientFraction(double x0, double y0, double esp = 0.0001, bool test = false)
+
+        public static double[] GradientFraction(Func<double[], double> fun,double x0, double y0, double esp = 0.0001,double param = 10, bool test = false)
         {
             double x = x0, y = y0, alfa = 0.25, xk = x0, yk = y0;
             int counter = 0;
-            Func<double[], double[]> grad = FiniteDifferences.Gradient(Fun, 2);
+            Func<double[], double[]> grad = FiniteDifferences.Gradient(fun, 2);
             var gr = grad(new []{x,y});
             while (Norm(gr) > esp)
             {
-                x = xk - alfa * gr[0];
                 y = yk - alfa * gr[1];
+                x = xk - alfa * gr[0];
 
-                if (Fun(x, y) > Fun(xk, yk))
-                    alfa = SetA(alfa);
+                if (fun(new []{x, y}) >= fun(new [] { xk, yk }))
+                {
+                    alfa /= 2;
+                }
+                else
+                {
+                    xk = x;
+                    yk = y;
+                }
+                
                 gr = grad(new []{x,y});
-                xk = x;
-                yk = y;
                 counter++;
             }
 
             if (!test)
             {
-                Console.WriteLine($"x={x},y={y} value Fun {Fun(x, y)}. counter = {counter}");
+                Console.WriteLine($"x={x},y={y} value Fun {fun(new []{x, y})}. counter = {counter}");
                 return new[] { x0, y0, counter };
             }
             else
@@ -91,18 +81,18 @@ namespace lab3
 
         }
 
-        public static double[] MinFunConjugateGradient(double x0, double y0, double esp = 0.0001, bool test = false)
+        public static double[] ConjugateGradient(Func<double[], double> fun, double x0, double y0, double esp = 0.0001, double parametr = 10, bool test = false)
         {
             double x = x0, y = y0, alfa = 0.25, xk = x0, yk = y0;
             int counter = 0;
-            Func<double[], double[]> grad = FiniteDifferences.Gradient(Fun, 2);
+            Func<double[], double[]> grad = FiniteDifferences.Gradient(fun, 2);
             var p = grad(new[] { x, y });
             double[] p1;
             while (true)
             {
 
-                Func<double, double> g = a => Fun(x - a * p[0], y - a * p[1]);
-                alfa = SetA(g);
+                Func<double, double> g = a => fun(new [] { x - a * p[0], y - a * p[1] });
+                alfa = Dichotomy(g, 0, parametr);
 
                 x = x - alfa * p[0];
                 y = y - alfa * p[1];
@@ -122,7 +112,7 @@ namespace lab3
 
             if (!test)
             {
-                Console.WriteLine($"x={x},y={y} value Fun {Fun(x, y)}. counter = {counter}");
+                Console.WriteLine($"x={x},y={y} value Fun {fun(new []{x, y})}. counter = {counter}");
                 return new[] { x0, y0, counter };
             }
             else
@@ -133,17 +123,17 @@ namespace lab3
             }
 
         }
-        
-        public static double[] MinFunGradientDescent(double x0, double y0, double esp = 0.0001, bool test = false)
+
+        public static double[] GradientDescent(Func<double[], double> fun, double x0, double y0, double esp = 0.0001,double parametr = 10, bool test = false)
         {
             double x = x0, y = y0, alfa;
             int counter = 0;
-            Func<double[], double[]> grad = FiniteDifferences.Gradient(Fun, 2);
+            Func<double[], double[]> grad = FiniteDifferences.Gradient(fun, 2);
             var gr = grad(new []{x,y});
             while (Norm(gr) > esp)
             {
-                Func<double, double> g = a => Fun(x - a * gr[0], y - a * gr[1]);
-                alfa = SetA(g);
+                Func<double, double> g = a => fun(new[] { x - a * gr[0], y - a * gr[1] });
+                alfa = Dichotomy(g, 0, parametr);
                 
                 x = x - alfa * gr[0];
                 y = y - alfa * gr[1];
@@ -154,7 +144,7 @@ namespace lab3
 
             if (!test)
             {
-                Console.WriteLine($"x={x},y={y} value Fun {Fun(x, y)} norm {Norm(gr)}. counter = {counter}");
+                Console.WriteLine($"x={x},y={y} value Fun {fun(new []{x, y})} norm {Norm(gr)}. counter = {counter}");
                 return new[] { x0, y0, counter };
             }
             else
